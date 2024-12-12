@@ -35,34 +35,23 @@ st.markdown("")
 
 
 
-#### TEST VIZ ######
-# st.dataframe(train_data.head(20))
-
-# fig = plt.figure(figsize=(10, 4))
-# sns.barplot(x="Pclass", y="Survived", data=train_data)
-# st.pyplot(fig)
-#### TEST VIZ ######
-
-
-
-
 # load the saved model
 model = joblib.load('model_titanic.joblib')
 
 with st.form("my_form"):
 
-    AGE = st.slider("Age de la personne?", 0, 2, 95)
+    AGE = st.slider("Age", 0, 2, 95)
 
     st.markdown("")
     st.markdown("")
 
-    SEX = st.radio("Sexe de la personne", ("Homme", "Femme"))
+    SEX = st.radio("Sexe", ("Homme", "Femme"))
 
     st.markdown("")
     st.markdown("")
 
     PCLASS = st.selectbox(
-        "Séletionez la classe de la personne", ("Première", "Deuxième", "Troisème")
+        "Séletionez la classe", ("Première", "Deuxième", "Troisème")
     )
 
 
