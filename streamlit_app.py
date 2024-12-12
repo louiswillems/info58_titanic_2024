@@ -1,113 +1,37 @@
-import altair as alt
-import pandas as pd
 import streamlit as st
-
 import numpy as np
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import wget
-import sklearn
-import joblib
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score
-
-
-# Configuration Page
-st.set_page_config(
-    page_title="Classification titanic", page_icon="🤖", layout="centered"
-)
-
-# Titre de l'app
-st.title("Classification binaire du titanic - 2024")
-
-
-st.markdown(
-    '<div style="text-align: center;"><img src="https://upload.wikimedia.org/wikipedia/en/1/18/Titanic_%281997_film%29_poster.png" alt="Italian Trulli"></div>',
-    unsafe_allow_html=True,
-)
-
-st.markdown("")
-st.markdown("")
+import string
+import pickle
 
 
 
-# load the saved model
-model = joblib.load('model_titanic.joblib')
-
-with st.form("my_form"):
-
-    AGE = st.slider("Age", 0, 2, 95)
-
-    st.markdown("")
-    st.markdown("")
-
-    SEX = st.radio("Sexe", ("Homme", "Femme"))
-
-    st.markdown("")
-    st.markdown("")
-
-    PCLASS = st.selectbox(
-        "Séletionez la classe", ("Première", "Deuxième", "Troisème")
-    )
+# On prends notre modèle dans le même répertoire
+model = pickle.load(open('reg_model.pkl','rb'))
 
 
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
-    st.markdown("")
+def main():
+  st.markdown("<h1 style='text-align: center; color: White;background-color:#e84343'>Graduate Admission Predictor</h1>", unsafe_allow_html=True)
+  st.markdown("<h3 style='text-align: center; color: Black;'>Drop in The required Inputs and we will do  the rest.</h3>", unsafe_allow_html=True)
+  st.markdown("<h4 style='text-align: center; color: Black;'>Submission for The Python Week</h4>", unsafe_allow_html=True)
+  st.sidebar.header("What is this Project about?")
+  st.sidebar.text("It a Web app that would help the user in determining whether they will get admission in a Graduate Program or not.")
+  st.sidebar.header("What tools where used to make this?")
+  st.sidebar.text("The Model was made using a dataset from Kaggle along with using Kaggle notebooks to train the model. We made use of Sci-Kit learn in order to make our Linear Regression Model.")
 
-    st.write(
-        "Cette personne avait ",
-        AGE,
-        "ans,",
-        " était un/une",
-        SEX,
-        "et était dans la",
-        PCLASS,
-        "classe",
-    )
 
-    if SEX == "Homme":
-        SEX = 1
-    else:
-        SEX = 0
+  cgpa = st.slider("Input Your CGPA",0.0,10.0)
+  gre = st.slider("Input your GRE Score",0,340)
+  toefl = st.slider("Input your TOEFL Score",0,120)
+  research = st.slider("Do You have Research Experience (0 = NO, 1 = YES)",0,1)
+  uni_rating = st.slider("Rating of the University you wish to get in on a Scale 1-5",1,5)
 
-    if PCLASS == "Première":
-        PCLASS = 1
-    elif PCLASS == "Deuxième":
-        PCLASS = 2
-    else:
-        PCLASS = 3
+  inputs = [[cgpa,gre,toefl,research,uni_rating]]
 
-    # if EMBARKED == "C":
-    #     EMBARKED = 1
-    # elif EMBARKED == "S":
-    #     EMBARKED = 2
-    # else:
-    #     EMBARKED = 3
+  if st.button('Predict'):
+    result = model.predict(inputs)
+    updated_res = result.flatten().astype(float)
+    st.success('The Probability of getting admission is {}'.format(updated_res[0]))
 
-    # PREDICTIONS 0 ou 1
-    pred = model.predict(
-        [[PCLASS, SEX, AGE]]
-    )
 
-    if pred == 0:
-        pred = "mort"
-    else:
-        pred = "survie"
-
-    st.metric(" ", pred)
-    
-    proba = model.predict_proba([[PCLASS, SEX, AGE]])
-
-    st.write(f"Probabilité de survie : {proba[0][1]*100:.2f}%")
-
-    st.write(f"Probabilité de décès : {proba[0][0]*100:.2f}%")
-
-    submitted = st.form_submit_button("Prédire")
+if __name__ =='__main__':
+  main()
