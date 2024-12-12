@@ -9,10 +9,6 @@ import matplotlib.pyplot as plt
 import wget
 import sklearn
 import joblib
-
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 
@@ -24,10 +20,6 @@ st.set_page_config(
 # Titre de l'app
 st.title("Classification binaire du titanic - 2024")
 
-
-# st.markdown(
-#     "[![Foo](https://upload.wikimedia.org/wikipedia/en/1/18/Titanic_%281997_film%29_poster.png)](http://google.com.au/)"
-# )
 
 st.markdown(
     '<div style="text-align: center;"><img src="https://upload.wikimedia.org/wikipedia/en/1/18/Titanic_%281997_film%29_poster.png" alt="Italian Trulli"></div>',
@@ -56,10 +48,7 @@ with st.form("my_form"):
     PCLASS = st.selectbox(
         "Séletionez la classe de la personne", ("Première", "Deuxième", "Troisème")
     )
-
-    # EMBARKED
-    # EMBARKED = st.selectbox("Séletionez l'embarcation", ("C", "S", "Q"))
-
+    
     st.markdown("")
     st.markdown("")
     st.markdown("")
